@@ -21,5 +21,5 @@ This is a quick (and dirty) implementation of a Blink Camera video downloader fo
 
 
 ## Based on (Special thanks to):
-https://github.com/nayrk/Blink
-https://github.com/MattTW/BlinkMonitorProtocol
+- https://github.com/nayrk/Blink
+- https://github.com/MattTW/BlinkMonitorProtocol
