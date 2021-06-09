@@ -11,7 +11,7 @@ import pickle
 import getpass
 
 blinkAPIServer = 'rest-prod.immedia-semi.com'
-sleepingTime = 30
+sleepingTime = 2
 
 def saveSession(data):
     (authToken, accountID, userID, clientID, region) = data
@@ -73,7 +73,7 @@ else:
 
         if ( SaveFolder.strip() == "" ):
             SaveFolder = "/tmp/Blink"
-            print("Using /tmp/Blink as folder to store the videos")
+    print("Using " + str(SaveFolder) + " as folder to store the videos")
 
 
     headers = {
