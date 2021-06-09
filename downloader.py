@@ -11,7 +11,7 @@ import pickle
 import getpass
 
 blinkAPIServer = 'rest-prod.immedia-semi.com'
-sleepingTime = 2
+sleepingTime = 30
 
 def saveSession(data):
     (authToken, accountID, userID, clientID, region) = data
