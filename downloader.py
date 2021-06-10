@@ -14,9 +14,9 @@ import psutil
 import logging
 
 blinkAPIServer = 'rest-prod.immedia-semi.com'
-sleepingTime = 2
+sleepingTime = 30
 
-def restart_program():
+def restart():
     try:
         p = psutil.Process(os.getpid())
         for handler in p.open_files() + p.connections():
@@ -258,5 +258,4 @@ while True:
     time.sleep(60 * sleepingTime)
 
 
-print("we are here")
-restart_program()
+restart()
