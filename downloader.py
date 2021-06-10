@@ -10,9 +10,22 @@ import pytz
 import os.path
 import pickle
 import getpass
+import psutil
+import logging
 
 blinkAPIServer = 'rest-prod.immedia-semi.com'
-sleepingTime = 2
+sleepingTime = 30
+
+def restart():
+    try:
+        p = psutil.Process(os.getpid())
+        for handler in p.open_files() + p.connections():
+            os.close(handler.fd)
+    except Exception, e:
+        logging.error(e)
+
+    python = sys.executable
+    os.execl(python, python, *sys.argv)
 
 def saveSession(data):
     (authToken, accountID, userID, clientID, region) = data
@@ -154,11 +167,7 @@ sync_units = requests.get(uri, headers=headers)
 
 networks = sync_units.json()["networks"]
 
-error = False
 while True:
-    if (error == True):
-        time.sleep(60)
-        break
     try:
         for sync_unit in networks:
             networkID = sync_unit["network_id"]
@@ -193,6 +202,7 @@ while True:
         pageNum = 1
 
         while True:
+            createerror = sys.argv[10]
             uri = 'https://rest-'+ str(region) +'.immedia-semi.com/api/v1/accounts/'+ str(accountID) +'/media/changed?since=2015-04-19T23:11:20+0000&page=' + str(pageNum)
             # Get the list of video clip information from each page from Blink
             response = requests.get(uri, headers=headers)
@@ -243,10 +253,9 @@ while True:
         else:
              print("No new Data - Sleeping for " + str(sleepingTime) + " minutes before next run...")
     except Exception:
-        print("Connection failed - Sleeping 1 minute before restarting...") 
-        error = True
+        print("Connection failed - Sleeping 10 seconds before restarting...") 
+        time.sleep(10)
         break
     time.sleep(60 * sleepingTime)
 
-
-os.execv(sys.argv[0], sys.argv)
+restart()
