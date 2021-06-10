@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import requests
 import shutil
 import os
@@ -11,7 +12,7 @@ import pickle
 import getpass
 
 blinkAPIServer = 'rest-prod.immedia-semi.com'
-sleepingTime = 30
+sleepingTime = 2
 
 def saveSession(data):
     (authToken, accountID, userID, clientID, region) = data
@@ -56,6 +57,7 @@ def verifyToken():
     except Exception, e:
         return (0, 0, 0, 0, 0)
 
+
 (authToken, accountID, userID, clientID, region) = verifyToken()
 
 if ( str(authToken) != "0" ):
@@ -73,7 +75,7 @@ else:
 
         if ( SaveFolder.strip() == "" ):
             SaveFolder = "/tmp/Blink"
-    print("Using " + str(SaveFolder) + " as folder to store the videos")
+            print("Using /tmp/Blink as folder to store the videos")
 
 
     headers = {
@@ -152,7 +154,11 @@ sync_units = requests.get(uri, headers=headers)
 
 networks = sync_units.json()["networks"]
 
+error = False
 while True:
+    if (error == True):
+        time.sleep(60)
+        break
     try:
         for sync_unit in networks:
             networkID = sync_unit["network_id"]
@@ -236,11 +242,11 @@ while True:
              print("Sleeping for 2 minutes before next run...")
         else:
              print("No new Data - Sleeping for " + str(sleepingTime) + " minutes before next run...")
-    except Exception, e:
-        print("Something failed - " + str(e)) 
-        #some extra sleep
-        print("Sleeping " + str(int(sleepingTime) + 5) + " minutes before next run...")
-        time.sleep(60 * 5)
+    except Exception:
+        print("Connection failed - Sleeping 1 minute before restarting...") 
+        error = True
+        break
     time.sleep(60 * sleepingTime)
 
 
+os.execv(sys.argv[0], sys.argv)
