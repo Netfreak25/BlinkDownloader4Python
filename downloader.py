@@ -14,9 +14,9 @@ import psutil
 import logging
 
 blinkAPIServer = 'rest-prod.immedia-semi.com'
-sleepingTime = 30
+sleepingTime = 2
 
-def restart():
+def restart_program():
     try:
         p = psutil.Process(os.getpid())
         for handler in p.open_files() + p.connections():
@@ -202,7 +202,6 @@ while True:
         pageNum = 1
 
         while True:
-            createerror = sys.argv[10]
             uri = 'https://rest-'+ str(region) +'.immedia-semi.com/api/v1/accounts/'+ str(accountID) +'/media/changed?since=2015-04-19T23:11:20+0000&page=' + str(pageNum)
             # Get the list of video clip information from each page from Blink
             response = requests.get(uri, headers=headers)
@@ -258,4 +257,6 @@ while True:
         break
     time.sleep(60 * sleepingTime)
 
-restart()
+
+print("we are here")
+restart_program()
