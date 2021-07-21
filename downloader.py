@@ -206,7 +206,6 @@ while True:
             # Get the list of video clip information from each page from Blink
             response = requests.get(uri, headers=headers)
             response = response.json()
-            path = SaveFolder + "/" + networkName + "/" + cameraName
 
             # quit if no more media is available to download
             try:
@@ -224,7 +223,10 @@ while True:
                 camera = video["device_name"]
                 camera_id = video["device_id"]
                 deleted = video["deleted"]
-
+                
+                path = SaveFolder + "/" + networkName + "/" + camera
+                createFolder(path)
+                
                 #Skip if marked as deleted
                 if(str(deleted) == "True"):
                     continue
