@@ -242,7 +242,7 @@ while True:
                     statusCode = download.status_code
                     if (statusCode != "200"):
                         newVideo = True
-                        print("Downloading " + str(timestamp) + ".mp4")
+                        print("Downloading " + str(timestamp) + ".mp4 from Camera " + str(camera) )
                         open(videoPath, 'wb').write(download.content)
                     else:
                         print("Download failed - Error " + str(statusCode))
