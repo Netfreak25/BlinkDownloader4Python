@@ -233,7 +233,7 @@ while True:
 
                 # Download address of video clip
                 videoURL = 'https://rest-'+ str(region) +'.immedia-semi.com' + str(address)
-                videoPath = path + "/" + str(timestamp) + ".mp4"
+                videoPath = path + "/" + str(str(timestamp)[:len(timestamp) - 6]).replace(":", "") + ".mp4"
 
 
                 # Download video if it is new
@@ -242,7 +242,7 @@ while True:
                     statusCode = download.status_code
                     if (statusCode != "200"):
                         newVideo = True
-                        print("Downloading " + str(timestamp) + ".mp4 from Camera " + str(camera) )
+                        print("Downloading " + str(str(timestamp)[:len(timestamp) - 6]).replace(":", "") + ".mp4 from Camera " + str(camera) )
                         open(videoPath, 'wb').write(download.content)
                     else:
                         print("Download failed - Error " + str(statusCode))
